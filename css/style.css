@@ -52,3 +52,23 @@ a {
 .cpadding {
     padding-right: 8px
 }
+
+/* Navigation */
+
+.nav-link {
+    color: var(--main-text-color)
+}
+
+.navbar-brand img {
+    width: 70px;
+    height: auto
+}
+
+.logged-user.dropdown>a:focus-within {
+    color: var(--hover-color-1)
+}
+
+nav .dropdown-menu {
+    padding-block: 0;
+    overflow: hidden
+}
