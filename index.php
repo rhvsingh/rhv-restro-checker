@@ -19,6 +19,8 @@ if (isset($_SESSION['user_location'])) {
     //$_SESSION['user_location'] = "Random Lol";
 }
 
+include_once('backend/assets/check.php');
+
 ?>
 
 <!DOCTYPE html>
