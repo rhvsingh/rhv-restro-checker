@@ -256,3 +256,90 @@ class restroData
         }
     }
 }
+
+class restroLocData
+{
+    private $restro_loc_id;
+    private $restro_loc_city_name;
+
+    function setrestroLocId($restro_loc_id)
+    {
+        $this->restro_loc_id = $restro_loc_id;
+    }
+
+    function setrestroCityName($restro_loc_city_name)
+    {
+        $this->restro_loc_city_name = $restro_loc_city_name;
+    }
+
+    function getrestroLocId()
+    {
+        return $this->restro_loc_id;
+    }
+
+    function getrestroCityName()
+    {
+        return $this->restro_loc_city_name;
+    }
+
+
+    function __construct()
+    {
+        $db = new dbConnect;
+        $this->dbconn = $db->connect();
+    }
+
+    function restroLocInsert()
+    {
+
+        $query_pre = "SELECT * FROM restro_locations WHERE restro_loc_city_name = :restro_loc_city_name";
+        $stmt_pre = $this->dbconn->prepare($query_pre);
+        $stmt_pre->bindParam(':restro_loc_city_name', $this->restro_loc_city_name);
+        $stmt_pre->execute();
+        if ($stmt_pre->rowCount() > 0) {
+            die("Location Already exists");
+        }
+
+        $query = "INSERT INTO restro_locations (restro_loc_city_name) ";
+        $query .= "VALUES(:restro_loc_city_name)";
+
+        $stmt = $this->dbconn->prepare($query);
+        //$stmt->bindParam(':restro_category_id',$this->restro_category_id);
+        $stmt->bindParam(':restro_loc_city_name', $this->restro_loc_city_name);
+        $stmt->execute();
+        if ($stmt->errorCode()) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    function restroLocShow()
+    {
+
+        $query = "SELECT * FROM restro_locations";
+
+        $stmt = $this->dbconn->prepare($query);
+        $stmt->execute();
+        if (!$stmt->errorCode()) {
+            die('Query Failed');
+        } else {
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
+
+    function restroLocShowById()
+    {
+
+        $query = "SELECT * FROM restro_locations WHERE restro_loc_id = :restro_loc_id";
+
+        $stmt = $this->dbconn->prepare($query);
+        $stmt->bindParam(':restro_loc_id', $this->restro_loc_id);
+        $stmt->execute();
+        if (!$stmt->errorCode()) {
+            die('Query Failed');
+        } else {
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+    }
+}
